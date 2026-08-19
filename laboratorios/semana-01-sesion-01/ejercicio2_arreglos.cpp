@@ -20,6 +20,15 @@ int main() {
     int minimo = datos[0];
     int maximo = datos[0];
     int suma = 0;
+    for(int i = 0; i < n; i++){
+        if (datos[i] < minimo){
+            minimo = datos[i];
+        }
+        if (datos[i] > maximo){
+            maximo = datos[i];
+        }
+        suma += datos[i];
+    }
 
     double promedio = static_cast<double>(suma) / n;
 
