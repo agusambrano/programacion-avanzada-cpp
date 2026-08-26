@@ -46,8 +46,6 @@ public:
 
     double convertirAFahrenheit() {
         return gradosCelsius * 9.0 / 5.0 + 32.0;
-        // TODO: retorna gradosCelsius convertido a Fahrenheit:
-        // celsius * 9 / 5 + 32
         return 0.0;
     }
 };
