@@ -26,3 +26,41 @@
 //
 // Compilar:  g++ -std=c++20 -Wall -Wextra -g ejercicio12_casillero.cpp -o bin/ejercicio12
 // Ejecutar:  ./bin/ejercicio12
+
+#include <iostream>
+
+class Casillero {
+private:
+    int numeroCombinacion;
+
+public:
+    bool setNumeroCombinacion(int n) {
+        if (n >= 1000 && n <= 9999) {
+            numeroCombinacion = n;
+            return true;
+        }
+
+        return false;
+    }
+
+    int getNumeroCombinacion() {
+        return numeroCombinacion;
+    }
+};
+
+int main() {
+    Casillero casillero;
+
+    bool resultado1 = casillero.setNumeroCombinacion(4821);
+
+    std::cout << std::boolalpha;
+    std::cout << "Combinacion asignada: " << resultado1 << std::endl;
+    std::cout << "Numero: " << casillero.getNumeroCombinacion() << std::endl;
+
+    bool resultado2 = casillero.setNumeroCombinacion(87);
+
+    std::cout << "Combinacion asignada: " << resultado2 << std::endl;
+    std::cout << "Numero: " << casillero.getNumeroCombinacion() << std::endl;
+
+    return 0;
+}
