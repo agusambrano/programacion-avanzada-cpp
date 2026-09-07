@@ -77,8 +77,10 @@ int main() {
 
     // TODO: antes de descomentar, predice: ¿que error da el compilador
     // y sobre que palabra exactamente?
-    // mfp.setNumeroSerie(1234);
-    // mfp.describir();
+    // El compilador daria un error de que es muy ambiguo porque hay dos caminos hereda
+    // desde Dispositivo a traves de Impresora y Escaner, seria en setNumeroSerie.
+    mfp.setNumeroSerie(1234);
+    mfp.describir();
 
     return 0;
 }

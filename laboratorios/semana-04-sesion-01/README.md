@@ -12,11 +12,11 @@ Evaluar los riesgos de la herencia múltiple, incluido el problema del diamante,
 
 Según el artículo, ¿qué hace que el problema del diamante sea un problema real, y no simplemente "otro caso más" de herencia múltiple?
 
-_(tu respuesta)_
+Que en una herencia multiple hay mas de un camino posible, por lo que el compilador da error al no saber por cual camino irse
 
 La sesión pasada terminó con un ConcepTest sobre `Impresora` y `Escaner`, dos clases sin relación conceptual que necesitaban el mismo método. Si en cambio las dos heredaran de una clase común, `Dispositivo`, y las combináramos en una tercera clase `ImpresoraMultifuncion`, ¿qué le pasaría a `numeroSerie`?
 
-_(tu respuesta)_
+Impresora_multifuncion tendria 2 copias de numeroSerie.
 
 ## Ejercicio 1: reproducir el diamante
 
@@ -24,15 +24,16 @@ Archivo: [`ejercicio1_dispositivo_multifuncion.cpp`](./ejercicio1_dispositivo_mu
 
 **Respuesta 1, antes de ver la solución:** ¿por qué `ImpresoraMultifuncion` termina con dos copias de `numeroSerie` en vez de una sola?
 
-_(tu respuesta)_
+Porque Impresora y escaner heredan de dispositivo y a su vez ImpresoraMultifuncion hereda de ambas.
 
 **Respuesta 2:** antes de descomentar las líneas marcadas con TODO en el archivo, ¿qué mensaje esperas que dé el compilador, y sobre qué palabra exactamente?
 
-_(tu respuesta)_
+Se espera un error de ambiguedad
 
 **La formulación completa, tal como la resuelvo yo:**
 
-_(anota aquí el mensaje de error real y qué significa, mientras se revisa en clase)_
+_ejercicio1_dispositivo_multifuncion.cpp:80:9: error: request for member ‘setNumeroSerie’ is ambiguous
+   80 |     mfp.setNumeroSerie(1234);
 
 ## Ejercicio 2: arreglar con herencia virtual
 
