@@ -1,41 +1,33 @@
+
 #include <iostream>
 #include <vector>
-
-// Salida esperada:
-// Total recaudado: 146.5
-// Ventas de al menos 20: 3
-// Primera venta de 210: 4 unidades
-// No hay ventas de 999
-// Ordenadas por total: 120 (56) 410 (36) 120 (28) 210 (14) 305 (10) 305 (2.5)
-
-// Las ventas de la tienda del laboratorio de electronica. Resuelve cada
-// TODO con un algoritmo de la STL, sin escribir ningun loop propio salvo
-// el que ya imprime las ventas ordenadas. Incluye arriba los encabezados
-// que necesites.
+#include <algorithm>
+#include <numeric>
 
 class Venta {
-    private:
-        int codigo;
-        int cantidad;
-        double precioUnitario;
-    public:
-        Venta(int nuevoCodigo, int nuevaCantidad, double nuevoPrecio) {
-            codigo = nuevoCodigo;
-            cantidad = nuevaCantidad;
-            precioUnitario = nuevoPrecio;
-        }
+private:
+    int codigo;
+    int cantidad;
+    double precioUnitario;
 
-        int getCodigo() {
-            return codigo;
-        }
+public:
+    Venta(int nuevoCodigo, int nuevaCantidad, double nuevoPrecio) {
+        codigo = nuevoCodigo;
+        cantidad = nuevaCantidad;
+        precioUnitario = nuevoPrecio;
+    }
 
-        int getCantidad() {
-            return cantidad;
-        }
+    int getCodigo() {
+        return codigo;
+    }
 
-        double getTotal() {
-            return cantidad * precioUnitario;
-        }
+    int getCantidad() {
+        return cantidad;
+    }
+
+    double getTotal() {
+        return cantidad * precioUnitario;
+    }
 };
 
 int main() {
@@ -47,25 +39,77 @@ int main() {
         Venta(410, 3, 12.0),
         Venta(305, 40, 0.25),
     };
+
     double umbral = 20.0;
 
-    // TODO: el total recaudado (la suma de getTotal() de todas las
-    // ventas). Imprime "Total recaudado: ".
+    // TODO 1: Total recaudado
+    double total = std::accumulate(
+        ventas.begin(),
+        ventas.end(),
+        0.0,
+        [](double suma, Venta v) {
+            return suma + v.getTotal();
+        }
+    );
 
-    // TODO: cuantas ventas tienen un total de al menos umbral. Imprime
-    // "Ventas de al menos 20: ".
+    std::cout << "Total recaudado: " << total << std::endl;
 
-    // TODO: busca la primera venta del producto 210 e imprime
-    // "Primera venta de 210: N unidades". Despues busca una venta del
-    // producto 999: si no existe, imprime "No hay ventas de 999". Escribe
-    // la busqueda de modo que el codigo buscado sea una variable, no un
-    // numero escrito dentro de la lambda.
+    // TODO 2: Ventas de al menos 20
+    int cantidad = std::count_if(
+        ventas.begin(),
+        ventas.end(),
+        [umbral](Venta v) {
+            return v.getTotal() >= umbral;
+        }
+    );
 
-    // TODO: ordena ventas de mayor a menor total.
+    std::cout << "Ventas de al menos 20: "
+              << cantidad << std::endl;
+
+    // TODO 3: Buscar productos
+    int codigoBuscado = 210;
+
+    auto it = std::find_if(
+        ventas.begin(),
+        ventas.end(),
+        [codigoBuscado](Venta v) {
+            return v.getCodigo() == codigoBuscado;
+        }
+    );
+
+    if (it != ventas.end()) {
+        std::cout << "Primera venta de 210: "
+                  << it->getCantidad()
+                  << " unidades" << std::endl;
+    }
+
+    codigoBuscado = 999;
+
+    it = std::find_if(
+        ventas.begin(),
+        ventas.end(),
+        [codigoBuscado](Venta v) {
+            return v.getCodigo() == codigoBuscado;
+        }
+    );
+
+    if (it == ventas.end()) {
+        std::cout << "No hay ventas de 999" << std::endl;
+    }
+
+    // TODO 4: Ordenar de mayor a menor total
+    std::sort(
+        ventas.begin(),
+        ventas.end(),
+        [](Venta a, Venta b) {
+            return a.getTotal() > b.getTotal();
+        }
+    );
 
     std::cout << "Ordenadas por total:";
     for (Venta v : ventas) {
-        std::cout << " " << v.getCodigo() << " (" << v.getTotal() << ")";
+        std::cout << " " << v.getCodigo()
+                  << " (" << v.getTotal() << ")";
     }
     std::cout << std::endl;
 
