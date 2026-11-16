@@ -23,7 +23,7 @@ class TarjetaDelComedor {
         int saldo;
         int aceptados;
         int rechazados;
-        // TODO 2: un std::mutex.
+        std::mutex candado;
     public:
         TarjetaDelComedor(int inicial) {
             saldo = inicial;
@@ -34,9 +34,7 @@ class TarjetaDelComedor {
         // Cobra monto si alcanza el saldo, y cuenta el cobro como aceptado
         // o rechazado.
         void cobrar(int monto) {
-            // TODO 3: protege con el candado todo el metodo: la pregunta y el
-            // cambio. Si proteges solo la resta, dos cajas pueden ver
-            // "alcanza" a la vez por el ultimo centavo.
+            std::lock_guard<std::mutex> guardia(candado);
             if (saldo >= monto) {
                 saldo = saldo - monto;
                 aceptados = aceptados + 1;
@@ -46,14 +44,17 @@ class TarjetaDelComedor {
         }
 
         int getSaldo() {
+            std::lock_guard<std::mutex> guardia(candado);
             return saldo;
         }
 
         int getAceptados() {
+            std::lock_guard<std::mutex> guardia(candado);
             return aceptados;
         }
 
         int getRechazados() {
+            std::lock_guard<std::mutex> guardia(candado);
             return rechazados;
         }
 };
@@ -67,9 +68,11 @@ void caja(TarjetaDelComedor* tarjeta, int intentos) {
 int main() {
     TarjetaDelComedor tarjeta(100000);
 
-    // TODO 1: dos std::thread que ejecuten caja(&tarjeta, 60000), y join().
-    caja(&tarjeta, 60000);
-    caja(&tarjeta, 60000);
+    std::thread hilo1(caja, &tarjeta, 60000);
+    std::thread hilo2(caja, &tarjeta, 60000);
+
+    hilo1.join();
+    hilo2.join();
 
     std::cout << "Saldo final: " << tarjeta.getSaldo() << std::endl;
     std::cout << "Cobros aceptados: " << tarjeta.getAceptados() << std::endl;
