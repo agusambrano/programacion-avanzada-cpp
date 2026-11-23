@@ -28,3 +28,93 @@
 // Promedio: 9812.38
 // Dias con meta: 5
 // Mejor racha: 2
+
+#include <iostream>
+#include <vector>
+
+class HistorialDePasos {
+private:
+    std::vector<int> pasos;
+
+public:
+    bool registrar(int cantidad) {
+        if (cantidad < 0) {
+            return false;
+        }
+
+        pasos.push_back(cantidad);
+        return true;
+    }
+
+    int dias() {
+        return pasos.size();
+    }
+
+    double promedio() {
+        if (pasos.empty()) {
+            return 0;
+        }
+
+        double total = 0;
+
+        for (int cantidad : pasos) {
+            total += cantidad;
+        }
+
+        return total / pasos.size();
+    }
+
+    int diasSobreMeta(int meta) {
+        int contador = 0;
+
+        for (int cantidad : pasos) {
+            if (cantidad >= meta) {
+                contador++;
+            }
+        }
+
+        return contador;
+    }
+
+    int mejorRacha(int meta) {
+        int racha = 0;
+        int mejor = 0;
+
+        for (int cantidad : pasos) {
+            if (cantidad >= meta) {
+                racha++;
+
+                if (racha > mejor) {
+                    mejor = racha;
+                }
+            } else {
+                racha = 0;
+            }
+        }
+
+        return mejor;
+    }
+};
+
+int main() {
+    HistorialDePasos historial;
+
+    historial.registrar(8000);
+    historial.registrar(12000);
+    historial.registrar(10500);
+
+    std::cout << "Registrar -50: " << historial.registrar(-50) << std::endl;
+
+    historial.registrar(4000);
+    historial.registrar(11000);
+    historial.registrar(13000);
+    historial.registrar(9999);
+    historial.registrar(10000);
+
+    std::cout << "Dias registrados: " << historial.dias() << std::endl;
+    std::cout << "Promedio: " << historial.promedio() << std::endl;
+    std::cout << "Dias con meta: " << historial.diasSobreMeta(10000) << std::endl;
+    std::cout << "Mejor racha: " << historial.mejorRacha(10000) << std::endl;
+
+    return 0;
+}
